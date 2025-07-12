@@ -1,0 +1,6 @@
+[dummy_group]
+dummy1 name=dummyserver1
+dummy2 name=dummyserver2
+
+[dummy_group:vars]
+description=not real server
