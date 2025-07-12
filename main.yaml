@@ -1,6 +1,6 @@
 ---
 - name: testing hostvars magic variable
-  hosts: dummy_group
+  hosts: all
   tasks:
     - debug:
         msg: "{{ hostvars }}"
