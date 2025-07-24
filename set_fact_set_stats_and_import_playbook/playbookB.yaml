@@ -1,6 +1,6 @@
 ---
-- name: Import and run included.yml
-  import_playbook: playbookA.yml
+- name: Import and run playbookA
+  import_playbook: playbookA.yaml
 
 - name: Playbook B - Debug values from Playbook A
   hosts: localhost
