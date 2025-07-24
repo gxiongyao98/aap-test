@@ -1,0 +1,12 @@
+---
+- name: Playbook 2 - Debug values from Playbook 1
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Debug set_fact value from previous playbook (should be undefined unless fact cache is enabled)
+      debug:
+        var: my_setfact_var
+
+    - name: Debug set_stats value (may appear if using Tower/AWX workflow, but not in standalone playbooks)
+      debug:
+        var: ansible_stats.my_setstats_var
