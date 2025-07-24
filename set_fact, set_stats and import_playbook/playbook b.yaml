@@ -1,0 +1,15 @@
+---
+- name: Import and run included.yml
+  import_playbook: playbook a.yml
+
+- name: Playbook b - Debug values from Playbook a
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Debug set_fact value from previous playbook (should be undefined unless fact cache is enabled)
+      debug:
+        var: my_setfact_var
+
+    - name: Debug set_stats value (may appear if using Tower/AWX workflow, but not in standalone playbooks)
+      debug:
+        var: my_setstats_var
