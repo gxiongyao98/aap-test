@@ -1,0 +1,25 @@
+---
+- name: Play 1 - Set fact and stat values
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Set a fact variable
+      set_fact:
+        my_setfact_var: "hello_from_set_fact"
+
+    - name: Set a stats variable (global)
+      set_stats:
+        data:
+          my_setstats_var: "hello_from_set_stats"
+
+- name: Play 2 - Debug values
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Debug set_fact variable
+      debug:
+        var: my_setfact_var
+
+    - name: Debug set_stats variable (access from global stats)
+      debug:
+        var: ansible_stats.my_setstats_var
