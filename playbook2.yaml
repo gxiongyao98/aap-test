@@ -9,4 +9,4 @@
 
     - name: Debug set_stats value (may appear if using Tower/AWX workflow, but not in standalone playbooks)
       debug:
-        var: ansible_stats.my_setstats_var
+        var: my_setstats_var
