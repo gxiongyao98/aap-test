@@ -1,0 +1,10 @@
+---
+- name: Test running playbook with multiple hosts with different credentials
+  hosts:
+    - runner1
+    - runner2
+  gather_facts: true
+  tasks:
+    - name: List local filesystem with df -h
+      ansible.builtin.command:
+        cmd: df -h
