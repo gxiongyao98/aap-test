@@ -10,12 +10,12 @@
         ansible_user: "{{ lookup('env', 'ansible_user2') }}"
         ansible_password: "{{ lookup('env', 'ansible_password2') }}"
   tasks:
-    add_host:
-      name: "{{ item.ansible_host }}"
-      groups: runners_group
-      ansible_user: "{{ item.ansible_user }}"
-      ansible_password: "{{ item.ansible_password }}"
-    loop: "{{ HOSTS_LIST }}"
+    - add_host:
+        name: "{{ item.ansible_host }}"
+        groups: runners_group
+        ansible_user: "{{ item.ansible_user }}"
+        ansible_password: "{{ item.ansible_password }}"
+      loop: "{{ HOSTS_LIST }}"
 
 - name: Test running playbook with multiple hosts with different credentials
   hosts: runners_group
