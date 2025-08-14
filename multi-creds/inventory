@@ -1,8 +1,8 @@
-[runners group]
-runner1 ansible_host=192.168.158.101 ansible_user="{{ lookup('env', 'ansible_user1') }}" ansible_password= "{{ lookup('env', 'ansible_password1') }}"
-runner2 ansible_host=192.168.158.102 ansible_user="{{ lookup('env', 'ansible_user2') }}" ansible_password= "{{ lookup('env', 'ansible_password2') }}"
+[runners_group]
+runner1 ansible_host=192.168.158.101 ansible_user="{{ lookup('env', 'ansible_user1') }}" ansible_password="{{ lookup('env', 'ansible_password1') }}"
+runner2 ansible_host=192.168.158.102 ansible_user="{{ lookup('env', 'ansible_user2') }}" ansible_password="{{ lookup('env', 'ansible_password2') }}"
 
-[runners group:vars]
+[runners_group:vars]
 ansible_become=true
 ansible_become_method=sudo
 ansible_become_password=P@ssw0rd
