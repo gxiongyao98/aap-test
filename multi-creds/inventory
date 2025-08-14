@@ -5,3 +5,4 @@ runner2 ansible_host=192.168.158.102 ansible_user="{{ ansible_user2 }}" ansible_
 [runners_group:vars]
 ansible_become=true
 ansible_become_method=sudo
+ansible_become_password="{{ ansible_password }}"
