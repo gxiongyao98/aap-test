@@ -10,6 +10,11 @@
         ansible_user: "{{ lookup('env', 'ansible_user2') }}"
         ansible_password: "{{ lookup('env', 'ansible_password2') }}"
   tasks:
+    - debug:
+        msg: 
+          - "{{ lookup('ansible.builtin.env', 'ansible_user1') }}"
+          - "{{ lookup('ansible.builtin.env', 'ansible_user2') }}"
+          
     - add_host:
         name: "{{ item.ansible_host }}"
         groups: runners_group
