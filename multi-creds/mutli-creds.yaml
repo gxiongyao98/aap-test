@@ -23,9 +23,7 @@
 #       loop: "{{ HOSTS_LIST }}"
 
 - name: Test running playbook with multiple hosts with different credentials
-  hosts: all
-    # - runner1
-    # - runner2
+  hosts: runner1, runner2
   gather_facts: true
   tasks:
     - name: List local filesystem with df -h
