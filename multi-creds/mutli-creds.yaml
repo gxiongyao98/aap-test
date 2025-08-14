@@ -1,29 +1,31 @@
 ---
-- name: Add hosts
-  hosts: localhost
-  vars:
-    HOSTS_LIST:
-      - ansible_host: 192.168.158.101
-        ansible_user: "{{ lookup('env', 'ansible_user1') }}"
-        ansible_password: "{{ lookup('env', 'ansible_password1') }}"
-      - ansible_host: 192.168.158.102
-        ansible_user: "{{ lookup('env', 'ansible_user2') }}"
-        ansible_password: "{{ lookup('env', 'ansible_password2') }}"
-  tasks:
-    - debug:
-        msg: 
-          - "{{ lookup('ansible.builtin.env', 'ansible_user1') }}"
-          - "{{ lookup('ansible.builtin.env', 'ansible_user2') }}"
-          
-    - add_host:
-        name: "{{ item.ansible_host }}"
-        groups: runners_group
-        ansible_user: "{{ item.ansible_user }}"
-        ansible_password: "{{ item.ansible_password }}"
-      loop: "{{ HOSTS_LIST }}"
+# - name: Add hosts
+#   hosts: localhost
+#   vars:
+#     HOSTS_LIST:
+#       - ansible_host: 192.168.158.101
+#         ansible_user: "{{ lookup('env', 'ansible_user1') }}"
+#         ansible_password: "{{ lookup('env', 'ansible_password1') }}"
+#       - ansible_host: 192.168.158.102
+#         ansible_user: "{{ lookup('env', 'ansible_user2') }}"
+#         ansible_password: "{{ lookup('env', 'ansible_password2') }}"
+#   tasks:
+#     - debug:
+#         msg: 
+#           - "{{ lookup('ansible.builtin.env', 'ansible_user1') }}"
+#           - "{{ lookup('ansible.builtin.env', 'ansible_user2') }}"
+
+#     - add_host:
+#         name: "{{ item.ansible_host }}"
+#         groups: runners_group
+#         ansible_user: "{{ item.ansible_user }}"
+#         ansible_password: "{{ item.ansible_password }}"
+#       loop: "{{ HOSTS_LIST }}"
 
 - name: Test running playbook with multiple hosts with different credentials
-  hosts: runners_group
+  hosts: 
+    - runner1
+    - runner2
   gather_facts: true
   tasks:
     - name: List local filesystem with df -h
