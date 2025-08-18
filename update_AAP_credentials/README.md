@@ -12,8 +12,8 @@
 
 | Variable                          | Description                                                                  |
 | --------------------------------- | -----------------------------------------------------------------------------|
-| `AAP_IP`                          | IP address of Ansible Automation Platform                                    |
+| `AAP_IP`                          | IP address of Ansible Automation Platform, example `aap-server1`             |
 | `AAP_TOKEN`                       | Authentication token for AAP                                                 |
 | `GIT_SERVER`                      | Either `GIT1` or `GIT2`                                                      |
-| `CYBERARK_CCP_URL`                | URL of CyberArk CCP                                                          |
-| `CYBERARK_CCP_CREDS_LIST_TO_PULL` | List of credentials to pull from CyberArk CCP                                |
+| `CYBERARK_CCP_URL`                | URL of CyberArk CCP, example `ccp-server1`                                   |
+| `CYBERARK_CCP_CREDS_LIST_TO_PULL` | List of credential names to pull from CyberArk CCP, example `gitlab-user1`   |
