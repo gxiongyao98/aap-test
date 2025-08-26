@@ -1,8 +1,6 @@
 ---
 - name: Play 1 - Run fail module
-  hosts: 
-	  - serverA
-	  - serverB
+  hosts: serverA, serverB
   gather_facts: false
   tasks:
     - name: Set task to fail
@@ -11,9 +9,7 @@
       when: inventory_hostname == 'serverA'
 
 - name: Play 2
-  hosts: 
-	  - serverA
-	  - serverB
+  hosts: serverA, serverB
   gather_facts: false
   tasks:
     - name: Print something
@@ -21,9 +17,7 @@
         msg: something
 
 - name: Play 3
-  hosts:
-	  - serverA
-	  - serverB
+  hosts: serverA, serverB
   gather_facts: false
   tasks:
     - name: Print something2
