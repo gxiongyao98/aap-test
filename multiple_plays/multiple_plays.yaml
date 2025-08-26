@@ -1,0 +1,24 @@
+---
+- name: Play 1 - Run fail module
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Set task to fail
+      fail:
+        msg: Fail the task
+
+- name: Play 2
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Print something
+      debug:
+        msg: something
+
+- name: Play 3
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Print something2
+      debug:
+        msg: something2
