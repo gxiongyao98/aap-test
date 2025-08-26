@@ -1,0 +1,17 @@
+- name: Single Play with block/rescue
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - block:
+        - name: Force failure
+          fail:
+            msg: "Fail the task"
+
+      rescue:
+        - name: Print something
+          debug:
+            msg: "something"
+
+        - name: Print something2
+          debug:
+            msg: "something2"
