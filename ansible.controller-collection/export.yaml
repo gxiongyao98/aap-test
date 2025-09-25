@@ -1,0 +1,25 @@
+---
+- name: Export specific project with dependencies
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Export project + dependencies
+      ansible.controller.export:
+        projects: ['update_AAP_credentials (LOCAL)']
+
+        # job_templates:
+        #   - name: "MyJobTemplate1"
+        #   - name: "MyJobTemplate2"
+
+        # inventories:
+        #   - name: "MyInventory1"
+
+        # credentials:
+        #   - name: "MyCredential1"
+
+        # credential_types:
+        #   - name: "MyCustomCredType"
+
+        # organizations:
+        #   - name: "Default"
