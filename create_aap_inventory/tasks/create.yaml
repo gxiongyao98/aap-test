@@ -27,7 +27,7 @@
     return_content: true
     body:
       name: "{{ group_name }}"
-      inventory: "{{ inventory_id | int }}"
+      inventory: "{{ inventory_id }}"
       variables: "{{ grp_vars }}"
     headers:
       Authorization: "Bearer {{ aap_token }}"
@@ -35,6 +35,7 @@
     body_format: json
     validate_certs: false
   register: create_group_res
+  failed_when: create_group_res.status != 201 and create_group_res.status != 200
 
 - name: type_debug
   debug:
