@@ -111,7 +111,9 @@
     validate_certs: false
   register: create_host_res
   loop: "{{ hostname_list }}"
-  when: check_host_res.results[loop.index0].json.count == 0
+  loop_control:
+    index_var: idx
+  when: check_host_res.results[idx].json.count == 0
 
 - name: Set variable for host_id_list (handles both existing and newly created hosts)
   ansible.builtin.set_fact:
@@ -147,6 +149,8 @@
     validate_certs: false
   register: add_host_to_grp_res
   loop: "{{ host_id_list }}"
+  loop_control:
+    index_var: idx
   when: host_id_list | length != 0
   failed_when: add_host_to_grp_res.status != 201 and add_host_to_grp_res.status != 200
-  when: check_host_in_grp_res.results[loop.index0].json.count == 0
+  when: check_host_in_grp_res.results[idx].json.count == 0
