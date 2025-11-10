@@ -121,19 +121,19 @@
   ansible.builtin.set_fact:
     host_id_list: []
 
-- name: Set variable for host_id_list (handles both existing and newly created hosts)
+- name: Set variable for host_id_list from create_host_res
   ansible.builtin.set_fact:
     host_id_list: >-
       {{ host_id_list + [item['json']['results'][0]['id']] }}
   loop: "{{ create_host_res.results }}"
-  when: create_host_res.results is defined and create_host_res.results | length > 0
+  when: not create_host_res.skipped
 
 - name: Add existing host IDs from check_host_res to host_id_list
   ansible.builtin.set_fact:
     host_id_list: >-
       {{ host_id_list + [item['json']['results'][0]['id']] }}
   loop: "{{ check_host_res.results }}"
-  when: check_host_res.results is defined and check_host_res.results | length > 0
+  when: not check_host_res.skipped
 
 # Check if hosts are inside the group already
 - name: Check if hosts are inside the group already
