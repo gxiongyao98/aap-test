@@ -75,19 +75,18 @@
     var: create_host_res
 
 ## Create host_id_list variable
-- name: Populate the host_id_list from multiple hosts
+- name: Populate the host_id_list from multiple and single entry in hostname_list
   ansible.builtin.set_fact:
-    host_id_list: >-
-      {{ host_id_list 
-      | create_host_res.results. }}
+    host_id_list: "{{ host_id_list + item['json']['id'] }}"
+  loop: "{{ create_host_res.results}}"
   when: hostname_list | length > 1
 
-## Create host_id_list variable
-- name: Populate the host_id_list for single host
-  ansible.builtin.set_fact:
-    host_id_list: "{{ host_id_list + item['id'] }}"
-  loop: "{{ create_host_res }}"
-  when: hostname_list | length == 1
+# ## Create host_id_list variable
+# - name: Populate the host_id_list for single host
+#   ansible.builtin.set_fact:
+#     host_id_list: "{{ host_id_list + item['id'] }}"
+#   loop: "{{ create_host_res }}"
+#   when: hostname_list | length == 1
 
 # Add all hosts to group
 - name: Create all hosts to group
