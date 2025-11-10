@@ -1,0 +1,25 @@
+---
+# Get list of created vm ip addr and add to containerised_scanners group
+- name: Create inventory in AAP
+  hosts: localhost
+
+  tasks:
+    - name: Include create_aap_inventory role
+      ansible.builtin.include_role:
+        name: create_aap_inventory
+        tasks_from: create
+      vars:
+        inventory_name: "testing from API"
+        grp_vars: "grpvar1: grpval1"
+        group_name: "testinggrpname from API"
+        hostname_list: [
+          {
+            hostname: "host1 from API",
+            variables: "hostvar1: hostval1\nhostvar2: hostval2"
+          }
+        ]
+
+    # - name: Add inventory to project
+
+
+

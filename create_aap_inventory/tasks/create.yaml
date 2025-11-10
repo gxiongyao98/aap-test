@@ -1,0 +1,100 @@
+# Create inventory
+- name: Create inventory with {{ inventory_name }}
+  ansible.builtin.uri:
+    url: "https://{{ aap_url }}/api/controller/v2/inventories/"
+    method: POST
+    return_content: true
+    body:
+      name: "{{ inventory_name }}"
+      organization: 1
+    headers:
+      Authorization: "Bearer {{ aap_token }}"
+      Content-Type: "application/json"
+    body_format: json
+    validate_certs: false
+  register: create_inventory_res
+  failed_when: create_inventory_res.status != 201 and create_inventory_res.status != 200
+
+- name: Set variable for inventory_id_temp
+  ansible.builtin.set_fact:
+    inventory_id: "{{ create_inventory_res['json']['id'] }}"
+
+# Create group
+- name: Create group with {{ group_name }}
+  ansible.builtin.uri:
+    url: "https://{{ aap_url }}/api/controller/v2/groups/"
+    method: POST
+    return_content: true
+    body:
+      name: "{{ group_name }}"
+      inventory: "{{ inventory_id | int }}"
+      variables: "{{ grp_vars }}"
+    headers:
+      Authorization: "Bearer {{ aap_token }}"
+      Content-Type: "application/json"
+    body_format: json
+    validate_certs: false
+  register: create_group_res
+
+- name: type_debug
+  debug:
+    msg: "type: {{ create_group_res['json']['id'] | type_debug }}"
+
+- debug:
+    msg: "{{ create_group_res['json']['id'] | to_nice_json }}"
+
+- name: Set variable for group_id
+  ansible.builtin.set_fact:
+    group_id: "{{ create_group_res['json']['id'] | int }}"
+
+# Create hosts
+- name: Create all hosts in hostname_list
+  ansible.builtin.uri:
+    url: "https://{{ aap_url }}/api/controller/v2/inventories/{{ inventory_id }}/hosts/"
+    method: POST
+    return_content: true
+    body:
+      name: "{{ item.hostname }}"
+      variables: "{{ item.variables }}"
+    headers:
+      Authorization: "Bearer {{ aap_token }}"
+      Content-Type: "application/json"
+    body_format: json
+    validate_certs: false
+  register: create_host_res
+  loop: "{{ hostname_list }}"
+
+- name: Create host_id_list variable to be empty list
+  ansible.builtin.set_fact:
+    host_id_list: []
+
+## Create host_id_list variable
+- name: Populate the host_id_list
+  ansible.builtin.set_fact:
+    host_id_list: "{{ host_id_list + item['id'] }}"
+  loop: "{{ create_host_res.results }}"
+  when: hostname_list | length > 1
+
+## Create host_id_list variable
+- name: Populate the host_id_list
+  ansible.builtin.set_fact:
+    host_id_list: "{{ host_id_list + item['id'] }}"
+  loop: "{{ create_host_res }}"
+  when: hostname_list | length == 1
+
+# Add all hosts to group
+- name: Create all hosts to group
+  ansible.builtin.uri:
+    url: "https://{{ aap_url }}/api/controller/v2/groups/{{ group_id }}/hosts/"
+    method: POST
+    return_content: true
+    body:
+      id: "{{ host_id }}"
+    headers:
+      Authorization: "Bearer {{ aap_token }}"
+      Content-Type: "application/json"
+    body_format: json
+    validate_certs: false
+  register: add_host_to_grp_res
+  loop: "{{ host_id_list }}"
+  when: host_id_list | length != 0

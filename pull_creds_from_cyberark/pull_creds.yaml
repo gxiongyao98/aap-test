@@ -1,0 +1,29 @@
+---
+- name: Pull credentials from CyberArk CCP
+  hosts: localhost
+  vars:
+    # Set as custom credentials in AAP
+    CYBERARK_CCP_IP: ""
+    PATH_TO_CLIENT_CERT: ""
+    PATH_TO_CLIENT_KEY: ""
+    app_id: ""
+    query: ""
+
+  tasks:
+    - name: Pull creds from CCP
+      cyberark.pas.cyberark_credential:
+        api_base_url: "https://{{ CYBERARK_CCP_IP }}"
+        validate_certs: true
+        client_cert: "{{ CLIENT_CERT }}" # path to cert file
+        client_key: "{{ CLIENT_KEY }}" # path to key file
+        app_id: "{{ app_id }}" # Change to your AppID
+        query: "Safe=test;UserName=admin" # Change to your query
+        connection_timeout: 60
+        query_format: Exact
+        fail_request_on_password_change: true
+        reason: "" # Change reason
+      register: cyberark_ccp_res
+
+    - name: Print cyberark_ccp_res
+      ansible.builtin.debug:
+        msg: "{{ cyberark_ccp_res }}"
