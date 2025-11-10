@@ -122,7 +122,8 @@
     host_id_list: []
 
 - debug:
-    var: check_host_res
+    var: item
+  loop: "{{ create_host_res.results }}"
 
 - name: Set variable for host_id_list (handles both existing and newly created hosts)
   ansible.builtin.set_fact:
