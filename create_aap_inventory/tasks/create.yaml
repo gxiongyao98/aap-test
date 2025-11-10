@@ -1,7 +1,7 @@
 # Check if inventory already exists
 - name: Check if inventory {{ inventory_name }} exists
   ansible.builtin.uri:
-    url: "https://{{ aap_url }}/api/controller/v2/inventories/?name={{ inventory_name }}"
+    url: "https://{{ aap_url }}/api/controller/v2/inventories?name={{ inventory_name }}"
     method: GET
     return_content: true
     headers:
