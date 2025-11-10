@@ -29,9 +29,13 @@
   failed_when: create_inventory_res.status != 201 and create_inventory_res.status != 200
   when: check_inventory_res.json.count == 0
 
-- name: Set variable for inventory_id_temp
+# Set variable for inventory_id (handles both existing and newly created inventory)
+- name: Set variable for inventory_id
   ansible.builtin.set_fact:
-    inventory_id: "{{ create_inventory_res['json']['id'] }}"
+    inventory_id: >-
+      {{ check_inventory_res.json.results[0].id
+         if check_inventory_res.json.count > 0
+         else create_inventory_res['json']['id'] }}
 
 # Check if group exists
 - name: Check if group {{ group_name }} exists
@@ -65,9 +69,12 @@
   failed_when: create_group_res.status != 201 and create_group_res.status != 200
   when: check_group_res.json.count == 0
 
-- name: Set variable for group_id
+- name: Set variable for group_id (handles both existing and newly created group)
   ansible.builtin.set_fact:
-    group_id: "{{ create_group_res['json']['id'] }}"
+    group_id: >-
+      {{ check_group_res.json.results[0].id
+         if check_group_res.json.count > 0
+         else create_group_res['json']['id'] }}
 
 # Check if each host in hostname_list exists
 - name: Check if host {{ item.hostname }} exists
@@ -102,15 +109,11 @@
   loop: "{{ hostname_list }}"
   when: check_host_res.results[loop.index0].json.count == 0
 
-- name: Create host_id_list variable to be empty list
+- name: Set variable for host_id_list (handles both existing and newly created hosts)
   ansible.builtin.set_fact:
-    host_id_list: []
-
-## Create host_id_list variable
-- name: Populate the host_id_list from multiple and single entry in hostname_list
-  ansible.builtin.set_fact:
-    host_id_list: "{{ host_id_list + item['json']['id'] }}"
-  loop: "{{ create_host_res.results}}"
+    host_id_list: >-
+      {{ host_id_list + [item['json']['id']] if 'json' in item and 'id' in item['json'] else host_id_list }}
+  loop: "{{ create_host_res.results }}"
 
 # Check if hosts are inside the group already
 - name: Check if hosts are inside the group already
