@@ -1,7 +1,7 @@
 # Check if inventory already exists
 - name: Check if inventory {{ inventory_name }} exists
   ansible.builtin.uri:
-    url: "https://{{ aap_url }}/api/controller/v2/inventories?name={{ inventory_name }}"
+    url: "https://{{ aap_url }}/api/controller/v2/inventories?name={{ inventory_name | urlencode }}"
     method: GET
     return_content: true
     headers:
@@ -36,7 +36,7 @@
 # Check if group exists
 - name: Check if group {{ group_name }} exists
   ansible.builtin.uri:
-    url: "https://{{ aap_url }}/api/controller/v2/groups/?name={{ group_name }}&inventory__name={{ inventory_name }}"
+    url: "https://{{ aap_url }}/api/controller/v2/groups/?name={{ group_name | urlencode }}&inventory__name={{ inventory_name | urlencode }}"
     method: GET
     return_content: true
     headers:
@@ -72,7 +72,7 @@
 # Check if each host in hostname_list exists
 - name: Check if host {{ item.hostname }} exists
   ansible.builtin.uri:
-    url: "https://{{ aap_url }}/api/controller/v2/hosts/?name={{ item.hostname }}&inventory__name={{ inventory_name }}"
+    url: "https://{{ aap_url }}/api/controller/v2/hosts/?name={{ item.hostname | urlencode }}&inventory__name={{ inventory_name | urlencode }}"
     method: GET
     return_content: true
     headers:
