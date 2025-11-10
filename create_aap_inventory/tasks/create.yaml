@@ -10,7 +10,7 @@
     validate_certs: false
   register: check_inventory_res
   failed_when: check_inventory_res.status != 200
-  no_logs: true
+  no_log: true
 
 # Create inventory
 - name: Create inventory with {{ inventory_name }}
@@ -29,7 +29,7 @@
   register: create_inventory_res
   failed_when: create_inventory_res.status != 201 and create_inventory_res.status != 200
   when: check_inventory_res.json.count == 0
-  no_logs: true
+  no_log: true
 
 # Set variable for inventory_id (handles both existing and newly created inventory)
 - name: Set variable for inventory_id
@@ -51,7 +51,7 @@
     validate_certs: false
   register: check_group_res
   failed_when: check_group_res.status != 200
-  no_logs: true
+  no_log: true
 
 # Create group
 - name: Create group with {{ group_name }}
@@ -71,7 +71,7 @@
   register: create_group_res
   failed_when: create_group_res.status != 201 and create_group_res.status != 200
   when: check_group_res.json.count == 0
-  no_logs: true
+  no_log: true
 
 - name: Set variable for group_id (handles both existing and newly created group)
   ansible.builtin.set_fact:
@@ -94,7 +94,7 @@
   loop: "{{ hostname_list }}"
   loop_control:
     label: "{{ item.hostname }}"
-  no_logs: true
+  no_log: true
 
 # Create hosts (only for those that don't exist)
 - name: Create all hosts in hostname_list
@@ -115,7 +115,7 @@
   loop_control:
     index_var: idx
   when: check_host_res.results[idx].json.count == 0
-  no_logs: true
+  no_log: true
 
 - name: Create host_id_list variable
   ansible.builtin.set_fact:
@@ -147,7 +147,7 @@
     validate_certs: false
   register: check_host_in_grp_res
   loop: "{{ host_id_list }}"
-  no_logs: true
+  no_log: true
 
 # Add all hosts to group
 - name: Add all hosts to group
@@ -169,4 +169,4 @@
   when: host_id_list | length != 0
   failed_when: add_host_to_grp_res.status != 201 and add_host_to_grp_res.status != 200
   when: check_host_in_grp_res.results[idx].json.count == 0
-  no_logs: true
+  no_log: true
