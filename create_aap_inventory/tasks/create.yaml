@@ -37,16 +37,16 @@
   register: create_group_res
   failed_when: create_group_res.status != 201 and create_group_res.status != 200
 
-- name: type_debug
-  debug:
-    msg: "type: {{ create_group_res['json']['id'] | type_debug }}"
+# - name: type_debug
+#   debug:
+#     msg: "type: {{ create_group_res['json']['id'] | type_debug }}"
 
-- debug:
-    msg: "{{ create_group_res['json']['id'] | to_nice_json }}"
+# - debug:
+#     msg: "{{ create_group_res['json']['id'] | to_nice_json }}"
 
-- name: Set variable for group_id
-  ansible.builtin.set_fact:
-    group_id: "{{ create_group_res['json']['id'] | int }}"
+# - name: Set variable for group_id
+#   ansible.builtin.set_fact:
+#     group_id: "{{ create_group_res['json']['id'] | int }}"
 
 # Create hosts
 - name: Create all hosts in hostname_list
@@ -64,6 +64,7 @@
     validate_certs: false
   register: create_host_res
   loop: "{{ hostname_list }}"
+  failed_when: create_host_res.status != 201 and create_host_res.status != 200
 
 - name: Create host_id_list variable to be empty list
   ansible.builtin.set_fact:
@@ -99,3 +100,4 @@
   register: add_host_to_grp_res
   loop: "{{ host_id_list }}"
   when: host_id_list | length != 0
+  failed_when: add_host_to_grp_res.status != 201 and add_host_to_grp_res.status != 200
