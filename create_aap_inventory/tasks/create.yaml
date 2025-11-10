@@ -77,8 +77,9 @@
 ## Create host_id_list variable
 - name: Populate the host_id_list from multiple hosts
   ansible.builtin.set_fact:
-    host_id_list: "{{ host_id_list + item['id'] }}"
-  loop: "{{ create_host_res.results }}"
+    host_id_list: >-
+      {{ host_id_list 
+      | create_host_res.results. }}
   when: hostname_list | length > 1
 
 ## Create host_id_list variable

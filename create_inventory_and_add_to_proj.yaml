@@ -16,6 +16,10 @@
           {
             hostname: "host1 from API",
             variables: "hostvar1: hostval1\nhostvar2: hostval2"
+          },
+          {
+            hostname: "host2 from API",
+            variables: "hostvar1: hostval1\nhostvar2: hostval2"
           }
         ]
 
