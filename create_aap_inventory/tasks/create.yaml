@@ -27,7 +27,7 @@
     body_format: json
     validate_certs: false
   register: create_inventory_res
-  failed_when: create_inventory_res.status != 201 and create_inventory_res.status != 200
+  failed_when: create_inventory_res.status != 201
   when: check_inventory_res.json.count == 0
   no_log: true
 
@@ -69,7 +69,7 @@
     body_format: json
     validate_certs: false
   register: create_group_res
-  failed_when: create_group_res.status != 201 and create_group_res.status != 200
+  failed_when: create_group_res.status != 201
   when: check_group_res.json.count == 0
   no_log: true
 
@@ -147,6 +147,7 @@
     validate_certs: false
   register: check_host_in_grp_res
   loop: "{{ host_id_list }}"
+  no_log: true
 
 # Add all hosts to group
 - name: Add all hosts to group
@@ -167,5 +168,6 @@
     index_var: idx
     loop_var: host_id
   when: host_id_list | length != 0
-  failed_when: add_host_to_grp_res.status != 201 and add_host_to_grp_res.status != 200
+  failed_when: add_host_to_grp_res.status != 204
   when: check_host_in_grp_res.results[idx].json.count == 0
+  no_log: true
