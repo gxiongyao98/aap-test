@@ -109,6 +109,10 @@
   loop: "{{ hostname_list }}"
   when: check_host_res.results[loop.index0].json.count == 0
 
+- name: print check_host_res
+  debug:
+    var: check_host_res
+
 - name: Set variable for host_id_list (handles both existing and newly created hosts)
   ansible.builtin.set_fact:
     host_id_list: >-
