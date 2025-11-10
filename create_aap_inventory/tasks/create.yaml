@@ -147,7 +147,6 @@
     validate_certs: false
   register: check_host_in_grp_res
   loop: "{{ host_id_list }}"
-  no_log: true
 
 # Add all hosts to group
 - name: Add all hosts to group
