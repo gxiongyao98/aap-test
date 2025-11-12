@@ -167,7 +167,6 @@
   loop_control:
     index_var: idx
     loop_var: host_id
-  when: host_id_list | length != 0
   failed_when: add_host_to_grp_res.status != 204
   when: check_host_in_grp_res.results[idx].json.count == 0
   no_log: true
