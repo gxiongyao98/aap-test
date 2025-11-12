@@ -131,10 +131,12 @@
 
 - name: Add existing host IDs from check_host_res to host_id_list
   ansible.builtin.set_fact:
-    host_id_list: >-
-      {{ host_id_list + [item['json']['id']] }}
+    host_id_list: "{{ host_id_list + [ item['json']['id'] ] }}"
   loop: "{{ check_host_res.results }}"
-  when: not check_host_res.skipped
+  when: >
+    (not check_host_res.skipped) and
+    (item.json is defined) and
+    (item.json.count | default(0) > 0)
 
 # Check if hosts are inside the group already
 - name: Check if hosts are inside the group already
