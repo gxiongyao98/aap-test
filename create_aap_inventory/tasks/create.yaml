@@ -122,23 +122,17 @@
   ansible.builtin.set_fact:
     host_id_list: []
 
-- debug:
-    var: create_host_res
-
-- debug:
-    var: check_host_res
-
 - name: Set variable for host_id_list from create_host_res
   ansible.builtin.set_fact:
     host_id_list: >-
-      {{ host_id_list + [item['json']['results'][0]['id']] }}
+      {{ host_id_list + [item['json']['id']] }}
   loop: "{{ create_host_res.results }}"
   when: not create_host_res.skipped
 
 - name: Add existing host IDs from check_host_res to host_id_list
   ansible.builtin.set_fact:
     host_id_list: >-
-      {{ host_id_list + [item['json']['results'][0]['id']] }}
+      {{ host_id_list + [item['json']['id']] }}
   loop: "{{ check_host_res.results }}"
   when: not check_host_res.skipped
 
