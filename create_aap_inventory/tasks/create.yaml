@@ -10,7 +10,7 @@
     validate_certs: false
   register: check_inventory_res
   failed_when: check_inventory_res.status != 200
-  no_log: true
+  # no_log: true
 
 # Create inventory
 - name: Create inventory with {{ inventory_name }}
