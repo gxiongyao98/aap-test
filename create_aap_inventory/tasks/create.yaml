@@ -114,8 +114,9 @@
   loop: "{{ hostname_list }}"
   loop_control:
     index_var: idx
-  when: check_host_res.results[idx].json.count == 0
-  # no_log: true
+  when: check_host_res.results[idx].json.count == 0 
+  failed_when: create_host_res.status != 201
+  no_log: true
 
 - name: Create host_id_list variable
   ansible.builtin.set_fact:
